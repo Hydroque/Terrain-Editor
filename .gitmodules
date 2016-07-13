@@ -1,0 +1,3 @@
+[submodule "XM-File-Format"]
+	path = XM-File-Format
+	url = https://github.com/Hydroque/XM-File-Format
