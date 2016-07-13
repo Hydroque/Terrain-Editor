@@ -7,15 +7,14 @@ public class ImageData {
 	private final int tid;
 	private final String location;
 	private final int width, height;
-	
-	private final boolean transparency;
+	private final int color_model;
 	
 	public ImageData(int tid, String location, Image image) {
 		this.tid = tid;
 		this.location = location;
-		this.width = image.width;
-		this.height = image.height;
-		this.transparency = image.transparency;
+		this.width = image.getWidth();
+		this.height = image.getHeight();
+		this.color_model = image.getColorModel();
 	}
 	
 	public int getTID() {
@@ -34,8 +33,8 @@ public class ImageData {
 		return height;
 	}
 	
-	public boolean isTransparent() {
-		return transparency;
+	public int getColorModel() {
+		return color_model;
 	}
 	
 }

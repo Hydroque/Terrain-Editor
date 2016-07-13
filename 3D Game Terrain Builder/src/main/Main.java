@@ -115,7 +115,7 @@ public class Main {
 		try {
 			terrain_shader = new TerrainShader(ShaderLoader.makeShader("res/shader/120/", "terrain.vp", "terrain.fp"));
 			terrain_shader.init();
-			a_materials = new Material[] {new Material(TextureLoader.loadMipmapXMM("res/texture/height.xmm"))};
+			a_materials = new Material[] {new Material(TextureLoader.loadMipmapXMM("res/texture/heightmap.xmm"))};
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}

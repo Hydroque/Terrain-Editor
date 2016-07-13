@@ -15,8 +15,8 @@ public class CoreEntity {
 		this.shader = shader;
 		this.materials = materials;
 		for (final Material m : materials)
-			if(transparency = m.getTextureData().isTransparent())
-				return;
+			if(transparency = m.getTextureData().getColorModel() == 4)
+				break;
 	}
 	
 	public ShaderModel getShaderModel() {
