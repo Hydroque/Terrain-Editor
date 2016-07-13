@@ -1,13 +1,34 @@
 package render.shader;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
+import static org.lwjgl.opengl.GL20.GL_COMPILE_STATUS;
+import static org.lwjgl.opengl.GL20.GL_FRAGMENT_SHADER;
+import static org.lwjgl.opengl.GL20.GL_INFO_LOG_LENGTH;
+import static org.lwjgl.opengl.GL20.GL_LINK_STATUS;
+import static org.lwjgl.opengl.GL20.GL_VALIDATE_STATUS;
+import static org.lwjgl.opengl.GL20.GL_VERTEX_SHADER;
+import static org.lwjgl.opengl.GL20.glAttachShader;
+import static org.lwjgl.opengl.GL20.glCompileShader;
+import static org.lwjgl.opengl.GL20.glCreateProgram;
+import static org.lwjgl.opengl.GL20.glCreateShader;
+import static org.lwjgl.opengl.GL20.glDeleteProgram;
+import static org.lwjgl.opengl.GL20.glDeleteShader;
+import static org.lwjgl.opengl.GL20.glDetachShader;
+import static org.lwjgl.opengl.GL20.glGetProgramInfoLog;
+import static org.lwjgl.opengl.GL20.glGetProgrami;
+import static org.lwjgl.opengl.GL20.glGetShaderInfoLog;
+import static org.lwjgl.opengl.GL20.glGetShaderi;
+import static org.lwjgl.opengl.GL20.glLinkProgram;
+import static org.lwjgl.opengl.GL20.glShaderSource;
+import static org.lwjgl.opengl.GL20.glValidateProgram;
+
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 
+import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
-
-import static org.lwjgl.opengl.GL20.*;
 
 public class ShaderLoader {
 
@@ -18,17 +39,19 @@ public class ShaderLoader {
 	private static final ArrayList<Shader> shaders = new ArrayList<Shader>();
 	
 	public static int createShader(String location, String name, int type) throws IOException {
-		final BufferedReader br = new BufferedReader(new FileReader(location + name));
-		final StringBuffer buffer = new StringBuffer();
+		final File f = new File(location + name);
+		final ByteBuffer bb = BufferUtils.createByteBuffer((int)f.length());
 		
-		String in;
-		while((in = br.readLine()) != null)
-			buffer.append(in).append('\n');
+		final byte[] buffer = new byte[4096];
+		final FileInputStream fis = new FileInputStream(f);
 		
-		br.close();
+		int count;
+		while((count = fis.read(buffer)) != -1)
+			bb.put(buffer, 0, count);
+		fis.close();
 		
 		final int shader = glCreateShader(type);
-		glShaderSource(shader, buffer);
+		glShaderSource(shader, bb);
 		glCompileShader(shader);
 		
 		checkForShaderError(shader, GL_COMPILE_STATUS, COMPILATION_ERROR + name);
