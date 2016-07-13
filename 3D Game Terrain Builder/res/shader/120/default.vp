@@ -1,0 +1,30 @@
+#version 120
+
+in vec3 position;
+in vec2 texcoord;
+in vec3 normal;
+
+out vec3 pass_position;
+out vec2 pass_texcoord;
+out vec3 pass_surfaceNormal;
+
+out vec3 pass_lightVector;
+out vec3 pass_cameraVector;
+
+uniform mat4 matrix_transform, matrix_projection, matrix_camera, matrix_icamera;
+
+uniform vec3 light_position;
+
+void main(void) {
+	vec4 world_position = matrix_transform * vec4(position, 1.0);
+	
+	pass_position = position;
+	pass_texcoord = texcoord;
+	pass_surfaceNormal = (matrix_transform * vec4(normal, 0.0)).xyz;
+	
+	pass_lightVector = light_position - world_position.xyz;
+	pass_cameraVector = (matrix_icamera * vec4(0,0,0,1)).xyz - world_position.xyz;
+	
+	gl_Position = matrix_projection * matrix_camera * world_position;
+	
+}

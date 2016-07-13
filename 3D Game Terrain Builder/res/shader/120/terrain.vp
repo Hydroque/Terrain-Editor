@@ -1,0 +1,17 @@
+#version 120
+
+in vec3 position;
+in vec2 texcoord;
+
+out vec2 pass_texcoord;
+
+uniform mat4 matrix_transform, matrix_projection, matrix_camera;
+
+uniform int repeat;
+
+void main(void) {
+	
+	pass_texcoord = texcoord * repeat;
+	gl_Position = matrix_projection * matrix_camera * matrix_transform * vec4(position.xyz, 1.0);
+	
+}

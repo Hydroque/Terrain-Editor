@@ -1,0 +1,16 @@
+#version 400 core
+
+layout(location=0) in vec2 position;
+layout(location=1) in vec2 texcoord;
+
+out vec2 pass_texcoord;
+
+uniform mat4 matrix_projection, matrix_transform;
+
+void main(void) {
+	
+	pass_texcoord = texcoord;
+	gl_Position = matrix_projection * matrix_transform * vec4(position, 0, 1);
+	
+}
+
